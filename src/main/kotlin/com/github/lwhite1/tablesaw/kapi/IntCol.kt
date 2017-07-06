@@ -50,7 +50,7 @@ class IntCol(val target: IntColumn) : NumericCol {
     operator fun times(c: FloatCol): FloatCol = FloatCol(target.multiply(c.target))
     operator fun times(value: Double): FloatCol = FloatCol(target.multiply(value))
 
-    operator fun rem(c: IntCol): IntCol = IntCol(target.remainder(c.target))
+    operator fun mod(c: IntCol): IntCol = IntCol(target.remainder(c.target))
 
     // cell access
     operator fun get(index: Int): Int = target.get(index)
@@ -143,7 +143,7 @@ class IntCol(val target: IntColumn) : NumericCol {
     fun isLessThanOrEqualTo(i: Int): IntCol = IntCol(target.select(target.isLessThanOrEqualTo(i)))
     fun isEqualTo(i: Int): IntCol = IntCol(target.select(target.isEqualTo(i)))
     fun isBetween(low: Int, high: Int): IntCol {
-        val selection :Selection = target.isGreaterThan(low)
+        val selection : Selection = target.isGreaterThan(low)
         selection.and(target.isLessThan(high))
         return IntCol(target.select(selection))
     }

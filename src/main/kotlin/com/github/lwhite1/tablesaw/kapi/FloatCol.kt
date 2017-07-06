@@ -71,7 +71,7 @@ class FloatCol(val target: FloatColumn) : NumericCol {
     operator fun times(c: IntCol): FloatCol = FloatCol(target.multiply(c.target))
     operator fun times(c: FloatCol): FloatCol = FloatCol(target.multiply(c.target))
 
-    operator fun rem(c: FloatCol): FloatCol = FloatCol(target.remainder(c.target))
+    operator fun mod(c: FloatCol): FloatCol = FloatCol(target.remainder(c.target))
 
 
     // descriptive statistics

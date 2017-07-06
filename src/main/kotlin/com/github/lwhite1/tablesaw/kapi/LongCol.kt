@@ -1,14 +1,14 @@
 package com.github.lwhite1.tablesaw.kapi
 
 import com.github.lwhite1.tablesaw.api.ColumnType
+import com.github.lwhite1.tablesaw.api.LongColumn
 import com.github.lwhite1.tablesaw.api.NumericColumn
-import com.github.lwhite1.tablesaw.api.ShortColumn
 import com.github.lwhite1.tablesaw.store.ColumnMetadata
 
 /**
  *
  */
-class ShortCol(val target: ShortColumn) : NumericCol {
+class LongCol(val target: LongColumn) : NumericCol {
 
     override fun target(): NumericColumn = target
 
@@ -18,40 +18,40 @@ class ShortCol(val target: ShortColumn) : NumericCol {
 
     override fun columnMetadata(): ColumnMetadata = target.columnMetadata()
 
-    override fun summary(): Dataframe = Dataframe(target.summary())
-
-    operator fun plus(c: ShortCol): IntCol = IntCol(target.append(c.target))
-
-    operator fun minus(c: ShortCol): IntCol = IntCol(target.subtract(c.target))
-
     override fun name(): String = target.name()
 
-/*
-    operator fun plus(value: Int): ShortCol = ShortCol(target.addToEach(value))
+    override fun summary(): Dataframe = Dataframe(target.summary())
 
-    operator fun minus(value: Int): ShortCol = ShortCol(target.addToEach(-value))
+    operator fun plus(c: LongCol): LongCol = LongCol(target.append(c.target))
+
+    operator fun minus(c: LongCol): LongCol = LongCol(target.subtract(c.target))
+
+/*
+    operator fun plus(value: Long): LongCol = LongCol(target.addToEach(value))
+
+    operator fun minus(value: Long): LongCol = LongCol(target.addToEach(-value))
 
     operator fun div(value: Int): FloatCol = FloatCol(target.divide(value))
 
-    operator fun div(c: ShortCol): FloatCol = FloatCol(target.divide(c.target))
+    operator fun div(c: LongCol): FloatCol = FloatCol(target.divide(c.target))
 */
 
     operator fun div(c: FloatCol): FloatCol = FloatCol(target.divide(c.target))
 
-    operator fun times(c: ShortCol): IntCol = IntCol(target.multiply(c.target))
+    operator fun times(c: LongCol): LongCol = LongCol(target.multiply(c.target))
 
     operator fun times(c: FloatCol): FloatCol = FloatCol(target.multiply(c.target))
 
-    operator fun rem(c: ShortCol): IntCol = IntCol(target.remainder(c.target))
+    operator fun mod(c: LongCol): LongCol = LongCol(target.remainder(c.target))
 
-    operator fun get(index: Int): Short = target.get(index)
+    operator fun get(index: Int): Long = target.get(index)
 
-    operator fun contains(i: Short) = target.contains(i)
+    operator fun contains(i: Long): Boolean = target.contains(i)
 
 /*
-    fun isMissing(): ShortCol = ShortCol(target.select(target.isMissing()))
+    fun isMissing(): LongCol = LongCol(target.select(target.isMissing()))
 
-    fun isNotMissing(): ShortCol = ShortCol(target.select(target.isNotMissing()))
+    fun isNotMissing(): LongCol = LongCol(target.select(target.isNotMissing()))
 */
 
     override fun size(): Int = target.size()
@@ -60,7 +60,7 @@ class ShortCol(val target: ShortColumn) : NumericCol {
 
     override fun countUnique(): Int = target.countUnique()
 
-    override fun unique(): ShortCol = ShortCol(target.unique())
+    override fun unique(): LongCol = LongCol(target.unique())
 
     override fun type(): ColumnType = target.type()
 
@@ -76,9 +76,9 @@ class ShortCol(val target: ShortColumn) : NumericCol {
 
     override fun toString(): String = target.toString()
 
-    override fun copy(): Col = ShortCol(target.copy())
+    override fun copy(): Col = LongCol(target.copy())
 
-    override fun emptyCopy(rowSize: Int): Col = ShortCol(target.emptyCopy())
+    override fun emptyCopy(rowSize: Int): Col = LongCol(target.emptyCopy())
 
 
     override fun clear() = target.clear()
@@ -89,7 +89,7 @@ class ShortCol(val target: ShortColumn) : NumericCol {
 
     override fun appendCell(stringValue: String) = target.appendCell(stringValue)
 
-    //override fun append(column: ShortColumn) = target.append(column)
+    //override fun append(column: LongColumn) = target.append(column)
 
     // math functions
     fun sum(): Long = target.sum()              // TODO(should this return double for consistency)
@@ -117,18 +117,18 @@ class ShortCol(val target: ShortColumn) : NumericCol {
     override fun kurtosis(): Double = target.kurtosis()
 
     // comparisons
-    fun isLessThan(i: Int): ShortCol = ShortCol(target.select(target.isLessThan(i)))
-
-    fun isGreaterThan(i: Int): ShortCol = ShortCol(target.select(target.isGreaterThan(i)))
-    fun isGreaterThanOrEqualTo(i: Int): ShortCol = ShortCol(target.select(target.isGreaterThanOrEqualTo(i)))
-    fun isLessThanOrEqualTo(i: Int): ShortCol = ShortCol(target.select(target.isLessThanOrEqualTo(i)))
-    fun isEqualTo(i: Int): ShortCol = ShortCol(target.select(target.isEqualTo(i)))
+    fun isLessThan(i: Long): LongCol = LongCol(target.select(target.isLessThan(i)))
+    fun isGreaterThan(i: Int): LongCol = LongCol(target.select(target.isGreaterThan(i)))
+    fun isGreaterThanOrEqualTo(i: Int): LongCol = LongCol(target.select(target.isGreaterThanOrEqualTo(i)))
+    fun isLessThanOrEqualTo(i: Int): LongCol = LongCol(target.select(target.isLessThanOrEqualTo(i)))
+    fun isEqualTo(i: Long): LongCol = LongCol(target.select(target.isEqualTo(i)))
 
     // other boolean tests
-    fun isPositive(): ShortCol = ShortCol(target.select(target.isPositive))
-    fun isNegative(): ShortCol = ShortCol(target.select(target.isNegative))
-    fun isNonNegative(): ShortCol = ShortCol(target.select(target.isNonNegative))
-    fun isZero(): ShortCol = ShortCol(target.select(target.isZero))
-    fun isEven(): ShortCol = ShortCol(target.select(target.isEven))
-    fun isOdd(): ShortCol = ShortCol(target.select(target.isOdd))
+    fun isPositive(): LongCol = LongCol(target.select(target.isPositive))
+    fun isNegative(): LongCol = LongCol(target.select(target.isNegative))
+    fun isNonNegative(): LongCol = LongCol(target.select(target.isNonNegative))
+    fun isZero(): LongCol = LongCol(target.select(target.isZero))
+    fun isEven(): LongCol = LongCol(target.select(target.isEven))
+    fun isOdd(): LongCol = LongCol(target.select(target.isOdd))
+
 }
