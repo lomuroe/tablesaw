@@ -447,12 +447,18 @@ public class DateColumn extends AbstractColumn implements DateMapUtils {
     return newColumn;
   }
 */
+
     public Selection isAfter(int value) {
         return select(PackedLocalDate::isAfter, value);
     }
 
     public Selection isAfter(LocalDate value) {
         int packed = PackedLocalDate.pack(value);
+        return select(PackedLocalDate::isAfter, packed);
+    }
+
+    public Selection isAfter(String value) {
+        int packed = PackedLocalDate.pack(LocalDate.parse(value, TypeUtils.DATE_FORMATTER));
         return select(PackedLocalDate::isAfter, packed);
     }
 
@@ -465,8 +471,18 @@ public class DateColumn extends AbstractColumn implements DateMapUtils {
         return select(PackedLocalDate::isBefore, packed);
     }
 
+    public Selection isBefore(String value){
+        int packed = PackedLocalDate.pack(LocalDate.parse(value, TypeUtils.DATE_FORMATTER));
+        return select(PackedLocalDate::isBefore, packed);
+    }
+
     public Selection isOnOrBefore(LocalDate value) {
         int packed = PackedLocalDate.pack(value);
+        return select(PackedLocalDate::isOnOrBefore, packed);
+    }
+
+    public Selection isOnOrBefore(String value){
+        int packed = PackedLocalDate.pack(LocalDate.parse(value, TypeUtils.DATE_FORMATTER));
         return select(PackedLocalDate::isOnOrBefore, packed);
     }
 
@@ -476,6 +492,11 @@ public class DateColumn extends AbstractColumn implements DateMapUtils {
 
     public Selection isOnOrAfter(LocalDate value) {
         int packed = PackedLocalDate.pack(value);
+        return select(PackedLocalDate::isOnOrAfter, packed);
+    }
+
+    public Selection isOnOrAfter(String value) {
+        int packed = PackedLocalDate.pack(LocalDate.parse(value, TypeUtils.DATE_FORMATTER));
         return select(PackedLocalDate::isOnOrAfter, packed);
     }
 

@@ -2,79 +2,13 @@ package com.github.lwhite1.tablesaw.columns;
 
 import com.github.lwhite1.tablesaw.api.IntColumn;
 import com.github.lwhite1.tablesaw.columns.packeddata.PackedLocalDate;
-import com.github.lwhite1.tablesaw.filtering.BooleanIsFalse;
-import com.github.lwhite1.tablesaw.filtering.BooleanIsTrue;
-import com.github.lwhite1.tablesaw.filtering.DateEqualTo;
-import com.github.lwhite1.tablesaw.filtering.Filter;
-import com.github.lwhite1.tablesaw.filtering.FloatEqualTo;
-import com.github.lwhite1.tablesaw.filtering.FloatGreaterThan;
-import com.github.lwhite1.tablesaw.filtering.FloatGreaterThanOrEqualTo;
-import com.github.lwhite1.tablesaw.filtering.FloatLessThan;
-import com.github.lwhite1.tablesaw.filtering.FloatLessThanOrEqualTo;
-import com.github.lwhite1.tablesaw.filtering.IntBetween;
-import com.github.lwhite1.tablesaw.filtering.IntEqualTo;
-import com.github.lwhite1.tablesaw.filtering.IntGreaterThan;
-import com.github.lwhite1.tablesaw.filtering.IntGreaterThanOrEqualTo;
-import com.github.lwhite1.tablesaw.filtering.IntIsIn;
-import com.github.lwhite1.tablesaw.filtering.IntLessThan;
-import com.github.lwhite1.tablesaw.filtering.IntLessThanOrEqualTo;
-import com.github.lwhite1.tablesaw.filtering.IsMissing;
-import com.github.lwhite1.tablesaw.filtering.IsNotMissing;
-import com.github.lwhite1.tablesaw.filtering.LocalDateBetween;
-import com.github.lwhite1.tablesaw.filtering.StringEqualTo;
-import com.github.lwhite1.tablesaw.filtering.StringNotEqualTo;
-import com.github.lwhite1.tablesaw.filtering.TimeEqualTo;
+import com.github.lwhite1.tablesaw.filtering.*;
 import com.github.lwhite1.tablesaw.filtering.columnbased.ColumnEqualTo;
 import com.github.lwhite1.tablesaw.filtering.dates.LocalDateIsAfter;
 import com.github.lwhite1.tablesaw.filtering.dates.LocalDateIsBefore;
-import com.github.lwhite1.tablesaw.filtering.datetimes.DateTimeIsBefore;
-import com.github.lwhite1.tablesaw.filtering.datetimes.IsFirstDayOfTheMonth;
-import com.github.lwhite1.tablesaw.filtering.datetimes.IsFriday;
-import com.github.lwhite1.tablesaw.filtering.datetimes.IsInApril;
-import com.github.lwhite1.tablesaw.filtering.datetimes.IsInAugust;
-import com.github.lwhite1.tablesaw.filtering.datetimes.IsInDecember;
-import com.github.lwhite1.tablesaw.filtering.datetimes.IsInFebruary;
-import com.github.lwhite1.tablesaw.filtering.datetimes.IsInJanuary;
-import com.github.lwhite1.tablesaw.filtering.datetimes.IsInJuly;
-import com.github.lwhite1.tablesaw.filtering.datetimes.IsInJune;
-import com.github.lwhite1.tablesaw.filtering.datetimes.IsInMarch;
-import com.github.lwhite1.tablesaw.filtering.datetimes.IsInMay;
-import com.github.lwhite1.tablesaw.filtering.datetimes.IsInNovember;
-import com.github.lwhite1.tablesaw.filtering.datetimes.IsInOctober;
-import com.github.lwhite1.tablesaw.filtering.datetimes.IsInQ1;
-import com.github.lwhite1.tablesaw.filtering.datetimes.IsInQ2;
-import com.github.lwhite1.tablesaw.filtering.datetimes.IsInQ3;
-import com.github.lwhite1.tablesaw.filtering.datetimes.IsInQ4;
-import com.github.lwhite1.tablesaw.filtering.datetimes.IsInSeptember;
-import com.github.lwhite1.tablesaw.filtering.datetimes.IsInYear;
-import com.github.lwhite1.tablesaw.filtering.datetimes.IsLastDayOfTheMonth;
-import com.github.lwhite1.tablesaw.filtering.datetimes.IsMonday;
-import com.github.lwhite1.tablesaw.filtering.datetimes.IsSaturday;
-import com.github.lwhite1.tablesaw.filtering.datetimes.IsSunday;
-import com.github.lwhite1.tablesaw.filtering.datetimes.IsThursday;
-import com.github.lwhite1.tablesaw.filtering.datetimes.IsTuesday;
-import com.github.lwhite1.tablesaw.filtering.datetimes.IsWednesday;
-import com.github.lwhite1.tablesaw.filtering.text.TextContains;
-import com.github.lwhite1.tablesaw.filtering.text.TextEndsWith;
-import com.github.lwhite1.tablesaw.filtering.text.TextEqualToIgnoringCase;
-import com.github.lwhite1.tablesaw.filtering.text.TextHasLengthEqualTo;
-import com.github.lwhite1.tablesaw.filtering.text.TextIsAlpha;
-import com.github.lwhite1.tablesaw.filtering.text.TextIsAlphaNumeric;
-import com.github.lwhite1.tablesaw.filtering.text.TextIsEmpty;
-import com.github.lwhite1.tablesaw.filtering.text.TextIsIn;
-import com.github.lwhite1.tablesaw.filtering.text.TextIsLongerThan;
-import com.github.lwhite1.tablesaw.filtering.text.TextIsLowerCase;
-import com.github.lwhite1.tablesaw.filtering.text.TextIsNumeric;
-import com.github.lwhite1.tablesaw.filtering.text.TextIsShorterThan;
-import com.github.lwhite1.tablesaw.filtering.text.TextIsUpperCase;
-import com.github.lwhite1.tablesaw.filtering.text.TextMatchesRegex;
-import com.github.lwhite1.tablesaw.filtering.text.TextStartsWith;
-import com.github.lwhite1.tablesaw.filtering.times.IsAfter;
-import com.github.lwhite1.tablesaw.filtering.times.IsAfterNoon;
-import com.github.lwhite1.tablesaw.filtering.times.IsBefore;
-import com.github.lwhite1.tablesaw.filtering.times.IsBeforeNoon;
-import com.github.lwhite1.tablesaw.filtering.times.IsMidnight;
-import com.github.lwhite1.tablesaw.filtering.times.IsNoon;
+import com.github.lwhite1.tablesaw.filtering.datetimes.*;
+import com.github.lwhite1.tablesaw.filtering.text.*;
+import com.github.lwhite1.tablesaw.filtering.times.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -126,6 +60,10 @@ public class ColumnReference {
 
     public Filter isBetween(LocalDate low, LocalDate high) {
         return new LocalDateBetween(this, low, high);
+    }
+
+    public Filter isBetween(String low, String high){
+        return new StringBetween(this, low, high);
     }
 
     public Filter isEqualTo(float value) {
@@ -386,6 +324,22 @@ public class ColumnReference {
 
     public Filter contains(String string) {
         return new TextContains(this, string);
+    }
+
+    public Filter isLessThan(String value) {
+        return new TextLessThan(this, value);
+    }
+
+    public Filter isLessThanOrEqualTo(String value) {
+        return new TextLessThanOrEqual(this, value);
+    }
+
+    public Filter isGreaterThanOrEqualTo(String value) {
+        return new TextGreaterThanOrEqual(this, value);
+    }
+
+    public Filter isGreaterThan(String value){
+        return new TextGreaterThan(this, value);
     }
 
     public Filter matchesRegex(String string) {

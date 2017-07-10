@@ -16,22 +16,10 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import it.unimi.dsi.fastutil.ints.Int2IntMap;
-import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.IntArrayList;
-import it.unimi.dsi.fastutil.ints.IntArrays;
-import it.unimi.dsi.fastutil.ints.IntComparator;
-import it.unimi.dsi.fastutil.ints.IntListIterator;
+import it.unimi.dsi.fastutil.ints.*;
 
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A column that contains String values. They are assumed to be 'categorical' rather than free-form text, so are
@@ -297,6 +285,74 @@ public class CategoryColumn extends AbstractColumn
      */
     public boolean contains(String aString) {
         return values.indexOf(dictionaryMap().get(aString)) >= 0;
+    }
+
+    /**
+     * Returns Selection which is less than given str
+     * @param str
+     * @return
+     */
+    public Selection isLessThan(String str){
+        Selection results = new BitmapBackedSelection();
+        int i = 0;
+        for (String next : this) {
+            if (str.compareTo(next)>0) {
+                results.add(i);
+            }
+            i++;
+        }
+        return results;
+    }
+
+    /**
+     * Returns Selection which is less than or equal to given str
+     * @param str
+     * @return
+     */
+    public Selection isLessThanOrEqual(String str){
+        Selection results = new BitmapBackedSelection();
+        int i = 0;
+        for (String next : this) {
+            if (str.compareTo(next)>=0) {
+                results.add(i);
+            }
+            i++;
+        }
+        return results;
+    }
+
+    /**
+     * Returns Selection which is greater than given str
+     * @param str
+     * @return
+     */
+    public Selection isGreaterThan(String str){
+        Selection results = new BitmapBackedSelection();
+        int i = 0;
+        for (String next : this) {
+            if (str.compareTo(next)<0) {
+                results.add(i);
+            }
+            i++;
+        }
+        return results;
+    }
+
+    /**
+     * Returns Selection which is greater than or equal to given str
+     * @param str
+     * @return
+     */
+    public Selection isGreaterThanOrEqual(String str){
+        Selection results = new BitmapBackedSelection();
+        int i = 0;
+        for (String next : this) {
+            if (str.compareTo(next)<=0) {
+                results.add(i);
+            }
+            i++;
+        }
+        return results;
     }
 
     /**
