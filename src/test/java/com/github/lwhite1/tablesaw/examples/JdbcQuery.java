@@ -24,7 +24,7 @@ import static com.github.lwhite1.tablesaw.api.QueryHelper.column;
 public class JdbcQuery {
 
     //数据库连接地址
-    private final static String URL = "jdbc:mysql://10.19.160.113:3306/algo_algorithm?useUnicode=yes&characterEncoding=UTF-8";
+    private final static String URL = "jdbc:mysql://10.19.160.113:3306/benew_stock?useUnicode=yes&characterEncoding=UTF-8";
     //用户名
     public final static String USERNAME = "hn_longmin";
     //密码
@@ -34,30 +34,31 @@ public class JdbcQuery {
 
     public static void main(String[] args) {
         // TODO Auto-generated method stub
-//        query();
-//        load();
-        String fileName = "F:\\benew\\data\\test\\t.txt";
+        query();
+        Table t = load();
 
-        List<Integer> floats = new ArrayList<>();
-        for(int i=0;i<10000000;i++){
-            floats.add(i);
-        }
-
-        try (FileOutputStream fos = new FileOutputStream(fileName);
-             SnappyFramedOutputStream sos = new SnappyFramedOutputStream(fos);
-             DataOutputStream dos = new DataOutputStream(sos)){
-            int i = 0;
-            for (int d : floats) {
-                dos.writeInt(d);
-                if (i % 10_000 == 0) {
-                    dos.flush();
-                }
-                i++;
-            }
-            dos.flush();
-        }catch(Exception ex){
-
-        }
+//        String fileName = "F:\\benew\\data\\test\\t.txt";
+//
+//        List<Integer> floats = new ArrayList<>();
+//        for(int i=0;i<10000000;i++){
+//            floats.add(i);
+//        }
+//
+//        try (FileOutputStream fos = new FileOutputStream(fileName);
+//             SnappyFramedOutputStream sos = new SnappyFramedOutputStream(fos);
+//             DataOutputStream dos = new DataOutputStream(sos)){
+//            int i = 0;
+//            for (int d : floats) {
+//                dos.writeInt(d);
+//                if (i % 10_000 == 0) {
+//                    dos.flush();
+//                }
+//                i++;
+//            }
+//            dos.flush();
+//        }catch(Exception ex){
+//
+//        }
 
 //        String value = "2014-12-16 00:00:00.0";
 //        DateTimeFormatter selectedFormatter = TypeUtils.DATE_TIME_FORMATTER;
@@ -83,7 +84,7 @@ public class JdbcQuery {
         }
     }
 
-    public static void load(){
+    public static Table load(){
         String folderPath = "F:\\benew\\data\\test\\tmp.saw";
         Stopwatch watch = Stopwatch.createStarted();
         Table t = Table.readTable(folderPath);
@@ -91,6 +92,7 @@ public class JdbcQuery {
         t.selectWhere(column("").isAfter(LocalDate.parse("2017", DateTimeFormatter.ofPattern("yyyy"))));
         out(watch.elapsed(TimeUnit.MILLISECONDS));
         out(t.rowCount());
+        return t;
     }
 
     public static void out(Object o){

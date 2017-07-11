@@ -66,6 +66,9 @@ public class LongIndex {
     public Selection get(long value) {
         Selection selection = new BitmapBackedSelection();
         IntArrayList list = index.get(value);
+        if(list==null){
+            return new BitmapBackedSelection();
+        }
         addAllToSelection(list, selection);
         return selection;
     }

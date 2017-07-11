@@ -954,6 +954,17 @@ public class Table implements Relation, IntIterable {
         return row;
     }
 
+    public static Table reIndex(Table table, IntArrayList reIndex){
+        Table tmpTable = Table.create("tmpTable");
+        for(String colName : table.columnNames()){
+            Column c = table.column(colName);
+            Column newCol = c.subset(reIndex);
+            tmpTable.addColumn(newCol);
+        }
+        tmpTable.setName(table.name);
+        return tmpTable;
+    }
+
     @Override
     public String toString() {
         return "Table " + name + ": Size = " + rowCount() + " x " + columnCount();

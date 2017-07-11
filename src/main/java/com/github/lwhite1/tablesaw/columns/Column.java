@@ -4,6 +4,7 @@ import com.github.lwhite1.tablesaw.api.ColumnType;
 import com.github.lwhite1.tablesaw.api.Table;
 import com.github.lwhite1.tablesaw.store.ColumnMetadata;
 import com.github.lwhite1.tablesaw.util.Selection;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntComparator;
 
 /**
@@ -26,6 +27,17 @@ public interface Column<E extends Column> {
         return c;
     }
 
+    default Column subset(IntArrayList rows) {
+        Column c = this.emptyCopy();
+        for (Integer row : rows) {
+            if(row<0){ /// add by lomuroe 20170711 to support reindex
+                c.appendCell(null);
+                continue;
+            }
+            c.appendCell(getString(row));
+        }
+        return c;
+    }
     /**
      * Returns the count of missing values in this column
      */

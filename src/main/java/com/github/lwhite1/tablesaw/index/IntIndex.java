@@ -92,6 +92,9 @@ public class IntIndex {
     public Selection get(int value) {
         Selection selection = new BitmapBackedSelection();
         IntArrayList list = index.get(value);
+        if(list==null){
+            return new BitmapBackedSelection();
+        }
         addAllToSelection(list, selection);
         return selection;
     }
