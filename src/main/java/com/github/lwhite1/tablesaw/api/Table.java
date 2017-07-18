@@ -46,6 +46,7 @@ import java.util.BitSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 import static com.github.lwhite1.tablesaw.sorting.Sort.Order;
@@ -954,12 +955,34 @@ public class Table implements Relation, IntIterable {
         return row;
     }
 
+    private static final int READER_POOL_SIZE = 4;
     public static Table reIndex(Table table, IntArrayList reIndex){
+        ExecutorService executorService = Executors.newFixedThreadPool(READER_POOL_SIZE);
+        CompletionService readerCompletionService = new ExecutorCompletionService<>(executorService);
         Table tmpTable = Table.create("tmpTable");
-        for(String colName : table.columnNames()){
-            Column c = table.column(colName);
-            Column newCol = c.subset(reIndex);
-            tmpTable.addColumn(newCol);
+        ConcurrentLinkedQueue<Column> columnList = new ConcurrentLinkedQueue<>();
+        try {
+            for (String colName : table.columnNames()) {
+                readerCompletionService.submit(() -> {
+                    Column newCol = table.column(colName).subset(reIndex);
+                    columnList.add(newCol);
+                    return null;
+                });
+            }
+            for (int i = 0; i < table.columnNames().size(); i++) {
+                Future future = readerCompletionService.take();
+                future.get();
+            }
+            for (Column c : columnList) {
+                tmpTable.addColumn(c);
+            }
+        }catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        finally {
+            executorService.shutdown();
         }
         tmpTable.setName(table.name);
         return tmpTable;

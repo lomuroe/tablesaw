@@ -108,7 +108,9 @@ public class StorageManager {
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
-        executorService.shutdown();
+        finally {
+            executorService.shutdown();
+        }
         return table;
     }
 
@@ -356,7 +358,9 @@ public class StorageManager {
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
-        executorService.shutdown();
+        finally {
+            executorService.shutdown();
+        }
         return storageFolder;
     }
 
