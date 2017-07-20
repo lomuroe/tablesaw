@@ -102,6 +102,10 @@ public class ColumnReference {
         return new IntIsIn(this, ints);
     }
 
+    public Filter isIn(long... longs) {
+        return new LongIsIn(this, longs);
+    }
+
     public Filter isLessThan(int value) {
         return new IntLessThan(this, value);
     }
