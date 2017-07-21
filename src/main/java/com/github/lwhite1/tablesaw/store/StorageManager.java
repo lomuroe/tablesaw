@@ -469,6 +469,7 @@ public class StorageManager {
                 }
                 i++;
             }
+            dos.flush();
         }
     }
 
@@ -599,6 +600,7 @@ public class StorageManager {
         try (FileOutputStream fOut = new FileOutputStream(myFile);
              OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut)) {
             myOutWriter.append(new TableMetadata(table).toJson());
+            myOutWriter.flush();
         }
     }
 
