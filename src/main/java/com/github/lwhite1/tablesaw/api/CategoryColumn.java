@@ -215,8 +215,13 @@ public class CategoryColumn extends AbstractColumn
         if (!b) {
 // TODO(lwhite): synchronize id() or column-level saveTable lock so we can increment id safely without atomic integer
 // objects
-            valueId = id++;
-            lookupTable.put(valueId, stringValue);
+            synchronized (lookupTable) { //added by llm 20170724
+                if(id==0&&lookupTable.size()!=0){ // category columns from read id do not init
+                    id=lookupTable.size();
+                }
+                valueId = id++;
+                lookupTable.put(valueId, stringValue);
+            }
         } else {
             valueId = lookupTable.get(stringValue);
         }
@@ -265,8 +270,13 @@ public class CategoryColumn extends AbstractColumn
     public void add(String stringValue) {
         int valueId = lookupTable.get(stringValue);
         if (valueId < 0) {
-            valueId = id++;
-            lookupTable.put(valueId, stringValue);
+            synchronized (lookupTable) { //added by llm 20170724
+                if(id==0&&lookupTable.size()!=0){ // category columns from read id do not init
+                    id=lookupTable.size();
+                }
+                valueId = id++;
+                lookupTable.put(valueId, stringValue);
+            }
         }
         values.add(valueId);
     }

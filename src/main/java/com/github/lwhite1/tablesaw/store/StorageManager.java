@@ -17,14 +17,7 @@ import com.google.common.annotations.VisibleForTesting;
 import org.iq80.snappy.SnappyFramedInputStream;
 import org.iq80.snappy.SnappyFramedOutputStream;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.EOFException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
@@ -272,16 +265,25 @@ public class StorageManager {
              DataInputStream dis = new DataInputStream(sis)) {
 
             int stringCount = dis.readInt();
+            System.out.println("categoryColumn:"+metadata.getName()+" string map's size is "+stringCount);
 
             int j = 0;
             while (j < stringCount) {
-                stringColumn.dictionaryMap().put(j, dis.readUTF());
-                j++;
+                try {
+                    stringColumn.dictionaryMap().put(j, dis.readUTF());
+                    j++;
+                }catch (UTFDataFormatException e){
+                    throw new RuntimeException("expect size: "+stringColumn +", but end to "+ j); //异常值监控
+                }
             }
 
             int size = metadata.getSize();
             for (int i = 0; i < size; i++) {
-                stringColumn.data().add(dis.readInt());
+                try {
+                    stringColumn.data().add(dis.readInt());
+                }catch (EOFException e){
+                    throw new RuntimeException("expect size: "+size +", but end to "+ i); //异常值监控
+                }
             }
         }
         return stringColumn;
@@ -322,6 +324,7 @@ public class StorageManager {
      */
     public static String saveTable(String folderName, Relation table) throws IOException {
 
+        System.out.println("begin to save table named :" + table.name());
         ExecutorService executorService = Executors.newFixedThreadPool(10);
         CompletionService writerCompletionService = new ExecutorCompletionService<>(executorService);
 
@@ -469,6 +472,7 @@ public class StorageManager {
                 }
                 i++;
             }
+            System.out.println("write row count :" + i);
             dos.flush();
         }
     }
